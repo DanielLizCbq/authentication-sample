@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var PersonController = require('../controllers/PersonController');
+var PersonController = require('../../controllers/PersonController');
 
 router.get('/', PersonController.all);
 
