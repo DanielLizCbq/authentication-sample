@@ -1,0 +1,6 @@
+server/node_modules/
+*.log
+server/.vscode/
+.vscode/
+server/development/
+server/tmp/
