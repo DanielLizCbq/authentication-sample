@@ -1,7 +1,36 @@
 <mat-toolbar>
   My App
   <span fxFlex></span>
-  <ng-container *ngIf="!(authenticated$ | async)">
+  <ng-container
+    *ngIf="authenticated$ | async as authenticated; else notAuthenticated"
+  >
+    <ng-container
+      *ngIf="authenticated && (user$ | async); else notAuthenticated"
+    >
+      <button mat-icon-button routerLink="/main/people">
+        <mat-icon>home</mat-icon>
+      </button>
+      <button mat-icon-button routerLink="/main/products">
+        <mat-icon>shop</mat-icon>
+      </button>
+      <button mat-icon-button (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+      </button>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <p class="username">{{ (user$ | async)?.email }}</p>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Exit</span>
+        </button>
+      </mat-menu>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #notAuthenticated>
     <button mat-button routerLink="/auth/login">
       <mat-icon>input</mat-icon>
       &nbsp;Sign in
@@ -10,29 +39,7 @@
       <mat-icon>person_add</mat-icon>
       &nbsp;Sign Up
     </button>
-  </ng-container>
-  <ng-container *ngIf="(authenticated$ | async) && (user$ | async)">
-    <button mat-icon-button routerLink="/main/people">
-      <mat-icon>home</mat-icon>
-    </button>
-    <button mat-icon-button routerLink="/main/products">
-      <mat-icon>shop</mat-icon>
-    </button>
-    <button mat-icon-button (click)="logout()">
-      <mat-icon>exit_to_app</mat-icon>
-    </button>
-    <button mat-icon-button [matMenuTriggerFor]="menu">
-      <mat-icon>account_circle</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <p class="username">{{ (user$ | async)?.email }}</p>
-      <mat-divider></mat-divider>
-      <button mat-menu-item (click)="logout()">
-        <mat-icon>exit_to_app</mat-icon>
-        <span>Exit</span>
-      </button>
-    </mat-menu>
-  </ng-container>
+  </ng-template>
 </mat-toolbar>
 
 <router-outlet></router-outlet>
